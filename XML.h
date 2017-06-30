@@ -12,24 +12,24 @@ namespace XML {
 		std::string name;
 		std::string value;
 		std::map<std::string, std::string> attr;
+		int depth;
 
-		//For debugging
-		/*void output(std::string &spaces) {
-			std::cout << spaces << "<" << name << " ";
-			for (auto i : attr) {
-				std::cout << i.first << "=\"" << i.second << "\" ";
+		friend std::ostream &operator<<(std::ostream &output, const Node &node) {
+			std::string spaces(node.depth, ' ');
+			output << spaces << "<" << node.name << " ";
+			for (auto i : node.attr) {
+				output << i.first << "=\"" << i.second << "\" ";
 			}
-			std::cout << ">" << std::endl;
-			if (!value.empty()) {
-				std::cout << spaces << value << std::endl;
+			output << ">" << std::endl;
+			if (!node.value.empty()) {
+				output << spaces << " " << node.value << std::endl;
 			}
-			spaces += " ";
-			for (auto i : children) {
-				i->output(spaces);
+			for (auto i : node.children) {
+				output << (*i);
 			}
-			spaces.pop_back();
-			std::cout << spaces << "</" << name << ">" << std::endl;
-		}*/
+			output << spaces << "</" << node.name << ">" << std::endl;
+			return output;
+		}
 	};
 
 	class File {
@@ -62,6 +62,8 @@ namespace XML {
 			Condition prev = Condition::Reading;
 			std::vector<Node*> stack;
 			root = new Node();
+			root->name = path;
+			root->depth = -1;
 			stack.push_back(root);
 			std::string temp;
 			std::string stemp;
@@ -115,6 +117,7 @@ namespace XML {
 						if (input[i] == ' ' || input[i] == '>') {
 							Node* node = new Node();
 							node->name = temp;
+							node->depth = stack.back()->depth + 1;
 							temp = "";
 							stack.back()->children.push_back(node);
 							stack.push_back(node);
@@ -244,14 +247,35 @@ namespace XML {
 			this->path = path;
 		}
 		bool open() {
-			return parce();
+			return open(path);
 		}
 		bool open(const char path[]) {
 			return open(std::string(path));
 		}
 		bool open(std::string& path) {
 			setPath(path);
-			return parce();
+			bool v = parce();
+			if (root) {
+				root->depth = 0;
+			}
+			return v;
+		}
+		
+		void save() {
+			save(path);
+		}
+		void save(const char path[]) {
+			save(std::string(path));
+		}
+		void save(std::string& path) {
+			setPath(path);
+			std::ofstream file(path);
+			save(file);
+		}
+		void save(std::ostream &stream) {
+			for (auto i : root->children) {
+				stream << (*i);
+			}
 		}
 	};
 }
