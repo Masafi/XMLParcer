@@ -13,6 +13,7 @@ After parcing, file will have root node, that represents a file.
 Also function returns 0, if something wrong happened, and 1, if everything went good. (it may return 1 even if something went bad, because it's hard to provide everything).
 
 # Usage
+## Open
 ### test.xml
 ```xml
 <tag>
@@ -42,9 +43,7 @@ This code will output
 
     sentence
     
-# Debug output
-You can uncomment the "output" function in node struct.
-## Example
+## Save (or output)
 ### main.cpp
 ```C++
 #include "XML.h"
@@ -53,24 +52,24 @@ int main() {
   XML::File f;
   f.open("test.xml");
   std::string s;
-  f.root->output(s);
+  f.save(std::cout);
+  f.save("test2.xml");
   std::system("pause");
   return 0;
 }
 ```
-This code will output
+This code will output (both in file and cout)
 
-    <test.xml >
-     <tag >
-      <word size="9px" value="Hello" >
-      </word>
-      <sentence size="10px" >
-      Hello,
-       <color value="#333333" >
-       World
-       </color>
-      </sentence>
-     </tag>
-    </test.xml>
+    <tag >
+     <word size="9px" value="Hello" >
+     </word>
+     <sentence size="10px" >
+      Hello, 
+      <color value="#333333" >
+       World 
+      </color>
+     </sentence>
+    </tag>
+
     
 (There are spaces after tag name because of incorrect output, the name itself is correct and without spaces)
