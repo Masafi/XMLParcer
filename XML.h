@@ -16,9 +16,9 @@ namespace XML {
 
 		friend std::ostream &operator<<(std::ostream &output, const Node &node) {
 			std::string spaces(node.depth, ' ');
-			output << spaces << "<" << node.name << " ";
+			output << spaces << "<" << node.name;
 			for (auto i : node.attr) {
-				output << i.first << "=\"" << i.second << "\" ";
+				output << " " << i.first << "=\"" << i.second << "\"";
 			}
 			output << ">" << std::endl;
 			if (!node.value.empty()) {
