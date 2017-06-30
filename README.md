@@ -60,16 +60,14 @@ int main() {
 ```
 This code will output (both in file and cout)
 
-    <tag >
-     <word size="9px" value="Hello" >
+    <tag>
+     <word size="9px" value="Hello">
      </word>
-     <sentence size="10px" >
+     <sentence size="10px">
       Hello, 
-      <color value="#333333" >
+      <color value="#333333">
        World 
       </color>
      </sentence>
     </tag>
 
-    
-(There are spaces after tag name because of incorrect output, the name itself is correct and without spaces)
