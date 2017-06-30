@@ -14,6 +14,12 @@ namespace XML {
 		std::map<std::string, std::string> attr;
 		int depth;
 
+		~Node() {
+			for (auto i : children) {
+				delete(i);
+			}
+		}
+
 		friend std::ostream &operator<<(std::ostream &output, const Node &node) {
 			std::string spaces(node.depth, ' ');
 			output << spaces << "<" << node.name;
@@ -241,6 +247,9 @@ namespace XML {
 
 		File() {
 			root = nullptr;
+		}
+		~File() {
+			delete(root);
 		}
 
 		void setPath(std::string& path) {
