@@ -34,7 +34,7 @@ Also function returns 0, if something wrong happened, and 1, if everything went 
 int main() {
   XML::File f;
   f.open("test.xml");
-  std::cout << f.root->children[0]->childer[1]->name << std::endl;
+  std::cout << f.root->children[0]->children[1]->name << std::endl;
   std::system("pause");
   return 0;
 }
